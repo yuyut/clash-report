@@ -1,0 +1,48 @@
+{
+    "sitePlan": {
+        "width": 1000,
+        "length": 500
+    },
+    "buildings": [
+        {
+            "name": "Oakwood Academy",
+            "type": "School",
+            "width": 300,
+            "length": 300,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "name": "Pulse",
+            "type": "Nightclub",
+            "width": 200,
+            "length": 200,
+            "x": 0,
+            "y": 500
+        },
+        {
+            "name": "Centennial Park",
+            "type": "Stadium",
+            "width": 700,
+            "length": 300,
+            "x": 400,
+            "y": 300
+        },
+        {
+            "name": "Willow Residence",
+            "type": "ResidentialBuilding",
+            "width": 200,
+            "length": 200,
+            "x": 300,
+            "y": 100
+        },
+        {
+            "name": "Maple Plaza",
+            "type": "Office",
+            "width": 150,
+            "length": 150,
+            "x": 250,
+            "y": 150
+        }
+    ]
+}

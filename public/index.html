@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clash Detection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Clash Detection Tool</h1>
+        <input type="file" id="fileInput" />
+        <button id="detectButton">Detect Clashes</button>
+        <div id="results"></div>
+    </div>
+    <script>
+        document.getElementById('detectButton').addEventListener('click', async () => {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files && fileInput.files[0]) {
+                try {
+                    const file = fileInput.files[0];
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+
+                    const response = await fetch('/detect-clashes', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message || 'Server error occurred');
+                    }
+
+                    const results = await response.json();
+                    document.getElementById('results').innerHTML = '<pre>' + JSON.stringify(results, null, 2) + '</pre>';
+                } catch (error) {
+                    if (error instanceof SyntaxError) {
+                        alert('Error: Invalid JSON file format. Please check your file.');
+                    } else {
+                        alert('Error: ' + error.message);
+                    }
+                    console.error('Error details:', error);
+                }
+            } else {
+                alert('Please select a file first.');
+            }
+        });
+    </script>
+</body>
+</html>
