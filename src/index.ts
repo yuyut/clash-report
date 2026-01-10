@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { ClashDetectionService } from "./ClashDetectionService";
+import { BoundsDetector, ProximityDetector, ZoningDetector } from "./detectors/ClashDetector";
 
 
 const app = express();
@@ -11,7 +12,12 @@ app.get('/health', (req, res) => {
     res.status(200).send('OK');
 });
 
-const service = new ClashDetectionService();
+// inject detectors into service
+const service = new ClashDetectionService([
+    new BoundsDetector(),
+    new ProximityDetector(),
+    new ZoningDetector(),
+]);
 
 app.post('/detect-clashes', async (req, res) =>{
     try {

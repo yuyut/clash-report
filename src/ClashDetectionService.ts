@@ -1,6 +1,6 @@
 import { Building, SitePlan, ClashDetectionResult, Clash, ClashType } from "./models";
 import { InputValidator } from "./validators/InputValidator";
-import { ProximityDetector, ZoningDetector, BoundsDetector } from "./detectors/ClashDetector";
+import { Detector } from "./detectors/ClashDetector";
 
 export interface ClashDetectionInput {
     sitePlan: SitePlan;
@@ -8,10 +8,10 @@ export interface ClashDetectionInput {
 }
 
 export class ClashDetectionService {
-    private validator = new InputValidator();
-    private boundsDetector = new BoundsDetector();
-    private proximityDetector = new ProximityDetector(); // includes both overlap and clearance
-    private zoningDetector = new ZoningDetector();
+    constructor(
+        private detectors: Detector[],
+        private validator: InputValidator = new InputValidator()
+    ) {}
 
     async detectClashes(input: ClashDetectionInput): Promise<ClashDetectionResult> {
 
@@ -22,18 +22,13 @@ export class ClashDetectionService {
                 validationErrors: validationErrors.map(err => err.message),
             };
         }
-        // Detect clashes
+        // Detect clashes using all injected detectors
         const clashes: Clash[] = [];
 
-        //chcek boundaries first
-        const boundsClashes = this.boundsDetector.detect(input.buildings, input.sitePlan);
-        clashes.push(...boundsClashes);
-        //check overlaps and clearance
-        const proximityClashes = this.proximityDetector.detect(input.buildings);
-        clashes.push(...proximityClashes);
-        //check zoning violations
-        const zoningClashes = this.zoningDetector.detect(input.buildings);
-        clashes.push(...zoningClashes);
+        for (const detector of this.detectors) {
+            const detectedClashes = detector.detect(input.buildings, input.sitePlan);
+            clashes.push(...detectedClashes);
+        }
         
         //summarize
         const summary = {

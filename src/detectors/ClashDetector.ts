@@ -1,6 +1,11 @@
 import { Building, Clash, SitePlan, BoundingBox } from '../models';
 import { GeometryUtils } from './GeometryUtils';
 
+// Base interface for all detectors
+export interface Detector {
+    detect(buildings: Building[], sitePlan?: SitePlan): Clash[];
+}
+
 interface RTreeNode<building> {
     bbox: BoundingBox;
     item?: building; //leaf node
@@ -94,7 +99,7 @@ class RTree<T> {
 }
 
 
-export class ProximityDetector {
+export class ProximityDetector implements Detector {
     private readonly MIN_CLEARANCE = 10;
 
     detect(buildings: Building[]): Clash[] {
@@ -165,8 +170,11 @@ export class ProximityDetector {
 
 }
 
-export class BoundsDetector {
-    detect(buildings: Building[], sitePlan: SitePlan): Clash[] {
+export class BoundsDetector implements Detector {
+    detect(buildings: Building[], sitePlan?: SitePlan): Clash[] {
+        if (!sitePlan) {
+            throw new Error('BoundsDetector requires sitePlan input');
+        }
         const clashes: Clash[] = [];
 
         buildings.forEach(building => {
