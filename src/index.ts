@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { ClashDetectionService } from "./ClashDetectionService";
 import { BoundsDetector, ProximityDetector, ZoningDetector } from "./detectors/ClashDetector";
+import { InputValidator } from "./validators/InputValidator";
 
 
 const app = express();
@@ -22,6 +23,10 @@ const service = new ClashDetectionService([
 app.post('/detect-clashes', async (req, res) =>{
     try {
         const result = await service.detectClashes(req.body);
+
+        if (result.validationErrors && result.validationErrors.length >0 ){
+            return res.status(400).json(result); // Bad Request for validation errors
+        }
         res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
