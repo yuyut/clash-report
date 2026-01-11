@@ -19,9 +19,9 @@ const service = new ClashDetectionService([
     new ZoningDetector(),
 ], new InputValidator());
 
-app.post('/detect-clashes', (req, res) =>{
+app.post('/detect-clashes', async (req, res) =>{
     try {
-        const result = service.detectClashes(req.body);
+        const result = await service.detectClashes(req.body);
 
         if (result.validationErrors && result.validationErrors.length >0 ){
             return res.status(400).json(result); 

@@ -13,7 +13,7 @@ export class ClashDetectionService {
         private validator: InputValidator
     ) {}
 
-    detectClashes(input: ClashDetectionInput): ClashDetectionResult {
+    async detectClashes(input: ClashDetectionInput): Promise<ClashDetectionResult> {
 
         // Validate input
         const validationErrors = this.validator.validate(input.buildings, input.sitePlan);
