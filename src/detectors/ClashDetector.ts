@@ -111,7 +111,7 @@ export class ProximityDetector implements Detector {
                 data: building
             };
         });
-        // build tree
+        
         rtree.load(items);
 
         // find overlaps and clearance issues

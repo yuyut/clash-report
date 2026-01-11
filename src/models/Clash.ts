@@ -6,16 +6,16 @@ export type ClashType =
 
 export interface Clash {
   type: ClashType;
-  buildings: string[]; // Building names involved
+  buildings: string[]; 
   description?: string;
-  details?: any; // Optional additional context
+  details?: any; 
 }
 
 export interface ClashDetectionResult {
   validationErrors?: string[];
   summary?: {
     totalClashes: number;
-    byType: Record<ClashType, number>; // how many of each type e.g., { 'Overlap': 3, 'OutOfBounds': 1 } 
+    byType: Record<ClashType, number>; // how many of each type
   };
   clashes?: Clash[];
 }

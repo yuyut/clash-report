@@ -8,26 +8,27 @@ import { InputValidator } from "./validators/InputValidator";
 const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
-// health check endpoint
+
 app.get('/health', (req, res) => {
     res.status(200).send('OK');
 });
 
-// inject detectors into service
 const service = new ClashDetectionService([
     new BoundsDetector(),
     new ProximityDetector(),
     new ZoningDetector(),
-]);
+], new InputValidator());
 
 app.post('/detect-clashes', async (req, res) =>{
     try {
         const result = await service.detectClashes(req.body);
 
         if (result.validationErrors && result.validationErrors.length >0 ){
-            return res.status(400).json(result); // Bad Request for validation errors
+            return res.status(400).json(result); 
         }
+
         res.status(200).json(result);
+        
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }

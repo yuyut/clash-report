@@ -10,7 +10,7 @@ export interface ClashDetectionInput {
 export class ClashDetectionService {
     constructor(
         private detectors: Detector[],
-        private validator: InputValidator = new InputValidator()
+        private validator: InputValidator
     ) {}
 
     async detectClashes(input: ClashDetectionInput): Promise<ClashDetectionResult> {
