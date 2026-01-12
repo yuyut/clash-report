@@ -203,12 +203,12 @@ export class BoundsDetector implements Detector {
     }
 }
 
-export class ZoningDetector {
+export class ZoningDetector implements Detector{
     private readonly NIGHTCLUB_SCHOOL_DISTANCE = 200;
     private readonly RESIDENTIAL_STADIUM_DISTANCE = 150;
     private readonly RESIDENTIAL_NIGHTCLUB_DISTANCE = 150;
 
-    detect(buildings: Building[]): Clash[] {
+    detect(buildings: Building[], sitePlan?: SitePlan): Clash[] {
         const clashes: Clash[] = [];
 
         //group buildings by type
