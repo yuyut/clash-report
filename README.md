@@ -1,6 +1,6 @@
 # Clash Detection
 
-Detects building clashes, boundary violations, and proximity issues using r-tree spatial indexing.
+Detects building clashes, boundary violations, and proximity issues.
 
 ### **Code Organization** 
 ```
@@ -59,7 +59,7 @@ Response format:
 
 The clash detector uses an R-tree spatial index instead of brute force checking (which would be O(n²)).
 
-Main implementation is in [ClashDetector.ts](src/detectors/ClashDetector.ts) - it queries the R-tree for overlapping bounding boxes, then validates actual geometry intersections and checks clearance distances.
+Main implementation is in [ClashDetector.ts](src/detectors/ClashDetector.ts)
 
 ## Tests
 
@@ -68,4 +68,4 @@ Running the test suite:
 npm test
 ```
 
-Covers proximity detection (overlaps, clearance violations, deduplication), boundary checks, and zoning validation with various edge cases.
+Covers proximity detection (overlaps, clearance violations, deduplication), boundary checks, and zoning validation
